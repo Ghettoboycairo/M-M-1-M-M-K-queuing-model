@@ -2,7 +2,7 @@ import math
 
 def queuing_model(arrival_rate, service_rate, num_servers=1):
     if num_servers == 1:
-        # Handle M/M/1 model
+        # M/M/1 model
         if arrival_rate >= service_rate:
             return {"error": "Unstable system (λ ≥ μ)"}
         utilizationRate = arrival_rate / service_rate
@@ -31,7 +31,7 @@ def queuing_model(arrival_rate, service_rate, num_servers=1):
         
         # Compute P0
         sum_part = 0.0
-        for n in range(numberOfServers - 1):
+        for n in range(numberOfServers):
             term = ( 1/math.factorial(n) ) * ( (arrival_rate / service_rate) ** n )
             sum_part += term
         last_term = ( (1/math.factorial(numberOfServers)) * (arrival_rate / service_rate) ** numberOfServers )
@@ -39,7 +39,7 @@ def queuing_model(arrival_rate, service_rate, num_servers=1):
         P0 = 1 / (sum_part + last_term)
         
         # Compute Pw (probability of waiting)
-        Pw = ( ( (arrival_rate / service_rate) ** numberOfServers ) / math.factorial(numberOfServers) ) * ( (numberOfServers * service_rate) / (numberOfServers * service_rate - arrival_rate) ) * P0
+        Pw = ( 1/math.factorial(numberOfServers) ) * ( (arrival_rate / service_rate) ** numberOfServers ) * ( (numberOfServers * service_rate) / (numberOfServers * service_rate - arrival_rate) ) * P0
         
         # Compute Lq
         numerator_Lq = ( (arrival_rate / service_rate) ** numberOfServers ) * arrival_rate * service_rate
